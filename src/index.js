@@ -1,8 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import './index.css';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import {
+    setObservableConfig,
+    componentFromStream
+} from "recompose";
+import rxjsConfig from "recompose/rxjsObservableConfig";
+import { Observable } from 'rxjs/Observable';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+setObservableConfig(rxjsConfig)
+
+const App = componentFromStream(prop$ =>
+    Observable.interval(1000).map(count =>
+        (<h1>{count}</h1>)
+    )
+)
+
+render(<App />, document.getElementById('root'));
 registerServiceWorker();
